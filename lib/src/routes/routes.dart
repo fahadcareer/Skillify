@@ -1,3 +1,4 @@
+import 'package:Skillify/src/pages/Assesment%20by%20Managers/assesmentdev.dart';
 import 'package:Skillify/src/pages/profile_page.dart';
 import 'package:Skillify/src/services/repositoty.dart';
 import 'package:go_router/go_router.dart';
@@ -72,6 +73,10 @@ final GoRouter router = GoRouter(
           assessment: extra['assessment'],
         );
       },
+    ),
+    GoRoute(
+      path: '/assignmentdev',
+      builder: (context, state) => const AssignmentDev(),
     ),
     GoRoute(
       path: '/result',

@@ -1,4 +1,5 @@
 import 'package:Skillify/src/data/local/cache_helper.dart';
+import 'package:Skillify/src/provider/profile_provider.dart';
 import 'package:Skillify/src/res/dimentions/space.dart';
 import 'package:Skillify/src/res/drawable/drawables.dart';
 import 'package:Skillify/src/res/style/app_typography.dart';
@@ -7,9 +8,59 @@ import 'package:Skillify/src/widgets/cus_bottom_nav.dart';
 import 'package:Skillify/src/widgets/cus_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  Future<void> _navigateToAssessment(BuildContext context) async {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(),
+              Space.y1!,
+              Text(
+                "Preparing your assessment...",
+                style: TextStyles.b1b,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    try {
+      final success = await profileProvider.generateAssessment();
+
+      Navigator.pop(context);
+
+      if (success) {
+        context.push('/assessment', extra: {
+          'userProfile': profileProvider.userProfile,
+          'assessment': profileProvider.assessment,
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text("Failed to generate assessment. Please try again.")),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +118,7 @@ class HomePage extends StatelessWidget {
                   context: context,
                   txtColor: Colors.white,
                   txt: 'Get Started',
-                  onPressed: () {
-                    context.push('/profile');
-                  },
+                  onPressed: () => _navigateToAssessment(context),
                 ),
               ),
               if (isManager) ...[
@@ -81,7 +130,7 @@ class HomePage extends StatelessWidget {
                     txtColor: Colors.white,
                     txt: 'Assignment for Students',
                     onPressed: () {
-                      context.push('/assignments');
+                      context.push('/assignmentdev');
                     },
                   ),
                 ),

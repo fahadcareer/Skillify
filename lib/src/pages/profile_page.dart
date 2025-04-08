@@ -73,8 +73,14 @@ class _ProfilePageState extends State<ProfilePage> {
             .split(',')
             .map((e) => e.trim())
             .toList(),
-        'shortTermGoals': _shortTermGoalsController.text,
-        'longTermGoals': _longTermGoalsController.text,
+        'shortTermGoals': _shortTermGoalsController.text
+            .split(',')
+            .map((e) => e.trim())
+            .toList(),
+        'longTermGoals': _longTermGoalsController.text
+            .split(',')
+            .map((e) => e.trim())
+            .toList(),
         'strengths':
             _strengthsController.text.split(',').map((e) => e.trim()).toList(),
         'weaknesses':
@@ -96,8 +102,10 @@ class _ProfilePageState extends State<ProfilePage> {
         (profileData['skills'] as List<dynamic>?)?.join(', ') ?? '';
     _certificationsController.text =
         (profileData['certifications'] as List<dynamic>?)?.join(', ') ?? '';
-    _shortTermGoalsController.text = profileData['shortTermGoals'] ?? '';
-    _longTermGoalsController.text = profileData['longTermGoals'] ?? '';
+    _shortTermGoalsController.text =
+        (profileData['shortTermGoals'] as List<dynamic>?)?.join(', ') ?? '';
+    _longTermGoalsController.text =
+        (profileData['longTermGoals'] as List<dynamic>?)?.join(', ') ?? '';
     _strengthsController.text =
         (profileData['strengths'] as List<dynamic>?)?.join(', ') ?? '';
     _weaknessesController.text =
