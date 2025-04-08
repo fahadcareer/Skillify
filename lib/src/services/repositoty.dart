@@ -5,7 +5,7 @@ import 'package:Skillify/src/services/network_services.dart';
 class Repository {
   final NetworkServices? networkServices;
 
-  Repository({this.networkServices});
+  Repository({required this.networkServices});
 
   Future<LoginModel> login(Map<String, dynamic> req) async {
     final loginRes =
@@ -17,5 +17,20 @@ class Repository {
     final registerRes = await networkServices!
         .post(endPoints: NetworkString.register, map: req);
     return registerRes;
+  }
+
+  Future<Map<String, dynamic>> getProfile(String email) async {
+    if (networkServices == null) {
+      return {'msg': 'Network service not initialized'};
+    }
+    return await networkServices!.getProfile(email);
+  }
+
+  Future<Map<String, dynamic>> saveProfile(
+      Map<String, dynamic> profileData) async {
+    if (networkServices == null) {
+      return {'msg': 'Network service not initialized'};
+    }
+    return await networkServices!.saveProfile(profileData);
   }
 }

@@ -1,27 +1,49 @@
+import 'package:Skillify/src/pages/profile_page.dart';
+import 'package:Skillify/src/services/repositoty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Skillify/src/pages/homepage.dart';
 import 'package:Skillify/src/pages/login/login_page.dart';
 import 'package:Skillify/src/pages/register/register_page.dart';
-import 'package:Skillify/src/pages/profile_page.dart';
 import 'package:Skillify/src/pages/assessment_page.dart';
 import 'package:Skillify/src/pages/result_page.dart';
 import 'package:Skillify/src/pages/404/404_page.dart';
 import 'package:Skillify/src/data/local/cache_helper.dart';
+import 'package:Skillify/src/services/network_services.dart';
+
+final Repository _repository = Repository(networkServices: NetworkServices());
 
 final GoRouter router = GoRouter(
   initialLocation: '/home',
   errorBuilder: (context, state) => const ErrorPage(),
-  redirect: (context, state) {
+  redirect: (context, state) async {
     final String? token = CacheHelper.getString(key: 'token');
+    final String? email = CacheHelper.getString(key: 'email');
     final bool isLoggedIn = token != null && token.isNotEmpty;
+
     if (state.fullPath == '/login' && isLoggedIn) {
       return '/home';
     }
+
     if (!isLoggedIn &&
         state.fullPath != '/login' &&
         state.fullPath != '/register') {
       return '/login';
     }
+
+    if (isLoggedIn &&
+        email != null &&
+        email.isNotEmpty &&
+        state.fullPath == '/home') {
+      try {
+        final response = await _repository.getProfile(email);
+        if (response['msg'] == 'Profile not found') {
+          return '/profile';
+        }
+      } catch (e) {
+        print('Error checking profile: $e');
+      }
+    }
+
     return null;
   },
   routes: <GoRoute>[

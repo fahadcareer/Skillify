@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Skillify/src/cubit/profile/profile_cubit.dart';
 import 'package:Skillify/src/cubit/register/register_cubit.dart';
 import 'package:Skillify/src/provider/assesment_provider.dart';
 import 'package:Skillify/src/provider/drawer_provider.dart';
@@ -12,6 +13,7 @@ import 'package:Skillify/src/res/drawable/drawables.dart';
 import 'package:Skillify/src/res/style/app_typography.dart';
 import 'package:Skillify/src/res/style/text_style.dart';
 import 'package:Skillify/src/routes/routes.dart';
+import 'package:Skillify/src/services/network_services.dart';
 import 'package:Skillify/src/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,16 +31,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     App.init(context);
 
-    // Create repository instance
-    final Repository repository = Repository();
-
+    final NetworkServices networkServices = NetworkServices();
+    final Repository repository = Repository(networkServices: networkServices);
     return MultiBlocProvider(providers: [
-      // Add RegisterCubit to the existing providers
       BlocProvider<RegisterCubit>(
         create: (context) => RegisterCubit(repository: repository),
       ),
-
-      // Existing providers
+      BlocProvider<ProfileCubit>(
+        create: (context) => ProfileCubit(repository: repository),
+      ),
       ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider()),
       ChangeNotifierProvider<DrawerProvider>(
