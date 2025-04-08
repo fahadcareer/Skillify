@@ -11,19 +11,10 @@ import 'package:go_router/go_router.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  void _logout(BuildContext context) async {
-    await CacheHelper.removeData(key: "token");
-    await CacheHelper.removeData(key: "email");
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Logged out successfully")),
-    );
-
-    context.go('/login');
-  }
-
   @override
   Widget build(BuildContext context) {
+    final int userRole = CacheHelper.getInt(key: "role");
+    final bool isManager = userRole == 0;
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
       appBar: CustomAppBar(
@@ -81,16 +72,20 @@ class HomePage extends StatelessWidget {
                   },
                 ),
               ),
-              // Space.y0!,
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: CustomButton(
-              //     context: context,
-              //     txtColor: Colors.white,
-              //     txt: 'Logout',
-              //     onPressed: () => _logout(context),
-              //   ),
-              // ),
+              if (isManager) ...[
+                Space.y!,
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomButton(
+                    context: context,
+                    txtColor: Colors.white,
+                    txt: 'Assignment for Students',
+                    onPressed: () {
+                      context.push('/assignments');
+                    },
+                  ),
+                ),
+              ],
               Space.y!,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

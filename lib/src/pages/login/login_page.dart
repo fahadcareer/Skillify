@@ -59,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                   key: "token", value: state.loginModel.token);
               await CacheHelper.saveData(
                   key: "email", value: state.loginModel.email);
+              await CacheHelper.saveData(
+                  key: "role", value: state.loginModel.role);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Welcome ${state.loginModel.email}!")),
               );
@@ -173,12 +175,6 @@ class _LoginPageState extends State<LoginPage> {
                             txt: 'Sign In',
                             onPressed: () => _login(context),
                           ),
-                    // Space.y1!,
-                    // CustomButton(
-                    //   context: context,
-                    //   txt: 'Sign Up',
-                    //   onPressed: () => context.go('/register'),
-                    // ),
                   ],
                 ),
               ),
