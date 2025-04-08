@@ -31,8 +31,8 @@ class _AssignmentDevState extends State<AssignmentDev> {
   Future<void> fetchNames() async {
     setState(() => isLoading = true);
     try {
-      final response = await http
-          .get(Uri.parse('http://192.168.45.150:5075/profiles/names'));
+      final response =
+          await http.get(Uri.parse('http://20.46.197.154:5075/profiles/names'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
@@ -73,7 +73,7 @@ class _AssignmentDevState extends State<AssignmentDev> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.45.150:5075/assignments'),
+        Uri.parse('http://20.46.197.154:5075/assignments'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(payload),
       );
