@@ -104,32 +104,26 @@ class ProfileProvider extends ChangeNotifier {
         controllers['educationLevel']!.text.isNotEmpty;
   }
 
-  // Add this method to convert assignment data to user profile format
   Future<void> setUserProfileFromAssignment(Assignment assignment) async {
-    // Create a user profile based on the assignment data
     Map<String, dynamic> profileData = {
       "name": assignment.name,
-      "age": 0, // Default as it's not in assignment data
-      "highest_qualification": "", // Default as it's not in assignment data
+      "age": 0,
+      "highest_qualification": "",
       "current_field": assignment.field,
-      "skills": assignment.skills.split(',').map((s) => s.trim()).toList(),
-      "certifications":
-          assignment.certifications.split(',').map((c) => c.trim()).toList(),
-      "short_term_goals": "", // Default as it's not in assignment data
-      "long_term_goals": "", // Default as it's not in assignment data
-      "strengths": [], // Default as it's not in assignment data
-      "weaknesses": [], // Default as it's not in assignment data
-      "projects": [], // Default as it's not in assignment data
+      "skills": assignment.skills.map((s) => s.trim()).toList(),
+      "certifications": assignment.certifications.map((c) => c.trim()).toList(),
+      "short_term_goals": "",
+      "long_term_goals": "",
+      "strengths": [],
+      "weaknesses": [],
+      "projects": [],
       "user_id": userID,
       "email": assignment.email,
-      "is_manager_assessment":
-          true, // Flag to indicate this is a manager assessment
+      "is_manager_assessment": true,
     };
 
-    // Set the user profile
     _userProfile = profileData;
 
-    // Also load it to controllers for consistency
     loadProfileToControllers(profileData);
 
     notifyListeners();
@@ -140,7 +134,6 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // If we're not working with a manager assessment, update from controllers
       if (_userProfile['is_manager_assessment'] != true) {
         updateProfileFromControllers();
       }
@@ -153,8 +146,6 @@ class ProfileProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         _assessment = json.decode(response.body);
-        // final responseJson = json.decode(response.body);
-        // print('Error message: ${responseJson['error'] ?? 'No detailed error'}');
 
         notifyListeners();
         return true;

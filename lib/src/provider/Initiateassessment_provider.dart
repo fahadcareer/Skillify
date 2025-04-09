@@ -20,8 +20,8 @@ class Assignment {
   final String name;
   final String email;
   final String field;
-  final String skills;
-  final String certifications;
+  final List<dynamic> skills;
+  final List<dynamic> certifications;
 
   Assignment({
     required this.name,
@@ -103,8 +103,8 @@ class InitiateassessmentProvider extends ChangeNotifier {
       "name": _selectedStudent!.name,
       "email": _selectedStudent!.email,
       "field": field,
-      "skills": skills.split(',').map((e) => e.trim()).toList(),
-      "certifications": certifications.split(',').map((e) => e.trim()).toList(),
+      "skills": skills.split(',').map((s) => s.trim()).toList(),
+      "certifications": certifications.split(',').map((c) => c.trim()).toList(),
     };
 
     try {
