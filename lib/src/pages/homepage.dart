@@ -1,5 +1,6 @@
 import 'package:Skillify/src/data/local/cache_helper.dart';
 import 'package:Skillify/src/provider/profile_provider.dart';
+import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
 import 'package:Skillify/src/res/dimentions/space.dart';
 import 'package:Skillify/src/res/drawable/drawables.dart';
 import 'package:Skillify/src/res/style/app_typography.dart';
@@ -46,6 +47,7 @@ class HomePage extends StatelessWidget {
         context.push('/assessment', extra: {
           'userProfile': profileProvider.userProfile,
           'assessment': profileProvider.assessment,
+          'isManagerAssessment': false,
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +57,83 @@ class HomePage extends StatelessWidget {
         );
       }
     } catch (e) {
-      // Close loading dialog
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+  }
+
+  Future<void> _navigateToManagerAssessment(BuildContext context) async {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    final initiateProvider =
+        Provider.of<InitiateassessmentProvider>(context, listen: false);
+
+    final userEmail = CacheHelper.getString(key: 'email');
+
+    if (userEmail.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("User email not found. Please login again.")),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(),
+              Space.y1!,
+              Text(
+                "Fetching your manager assessment...",
+                style: TextStyles.b1b,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    try {
+      await initiateProvider.fetchAssignmentByEmail(userEmail);
+
+      if (initiateProvider.currentAssignment == null) {
+        Navigator.pop(context); // Close dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text("No manager assessment found for your profile.")),
+        );
+        return;
+      }
+
+      await profileProvider
+          .setUserProfileFromAssignment(initiateProvider.currentAssignment!);
+
+      final success = await profileProvider.generateAssessment();
+
+      Navigator.pop(context);
+
+      if (success) {
+        context.push('/assessment', extra: {
+          'userProfile': profileProvider.userProfile,
+          'assessment': profileProvider.assessment,
+          'isManagerAssessment': true,
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text("Failed to generate assessment. Please try again.")),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: ${e.toString()}")),
       );
@@ -117,8 +195,18 @@ class HomePage extends StatelessWidget {
                 child: CustomButton(
                   context: context,
                   txtColor: Colors.white,
-                  txt: 'Get Started',
+                  txt: 'Self Assessment',
                   onPressed: () => _navigateToAssessment(context),
+                ),
+              ),
+              Space.y!,
+              SizedBox(
+                width: double.infinity,
+                child: CustomButton(
+                  context: context,
+                  txtColor: Colors.white,
+                  txt: 'Manager-Based Assessment',
+                  onPressed: () => _navigateToManagerAssessment(context),
                 ),
               ),
               if (isManager) ...[
@@ -128,9 +216,9 @@ class HomePage extends StatelessWidget {
                   child: CustomButton(
                     context: context,
                     txtColor: Colors.white,
-                    txt: 'Assignment for Students',
+                    txt: 'Initiate Assessment',
                     onPressed: () {
-                      context.push('/assignmentdev');
+                      context.push('/Initiateassessment');
                     },
                   ),
                 ),

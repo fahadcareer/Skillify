@@ -1,4 +1,5 @@
 import 'package:Skillify/src/data/local/cache_helper.dart';
+import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -103,12 +104,46 @@ class ProfileProvider extends ChangeNotifier {
         controllers['educationLevel']!.text.isNotEmpty;
   }
 
+  // Add this method to convert assignment data to user profile format
+  Future<void> setUserProfileFromAssignment(Assignment assignment) async {
+    // Create a user profile based on the assignment data
+    Map<String, dynamic> profileData = {
+      "name": assignment.name,
+      "age": 0, // Default as it's not in assignment data
+      "highest_qualification": "", // Default as it's not in assignment data
+      "current_field": assignment.field,
+      "skills": assignment.skills.split(',').map((s) => s.trim()).toList(),
+      "certifications":
+          assignment.certifications.split(',').map((c) => c.trim()).toList(),
+      "short_term_goals": "", // Default as it's not in assignment data
+      "long_term_goals": "", // Default as it's not in assignment data
+      "strengths": [], // Default as it's not in assignment data
+      "weaknesses": [], // Default as it's not in assignment data
+      "projects": [], // Default as it's not in assignment data
+      "user_id": userID,
+      "email": assignment.email,
+      "is_manager_assessment":
+          true, // Flag to indicate this is a manager assessment
+    };
+
+    // Set the user profile
+    _userProfile = profileData;
+
+    // Also load it to controllers for consistency
+    loadProfileToControllers(profileData);
+
+    notifyListeners();
+  }
+
   Future<bool> generateAssessment() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      updateProfileFromControllers();
+      // If we're not working with a manager assessment, update from controllers
+      if (_userProfile['is_manager_assessment'] != true) {
+        updateProfileFromControllers();
+      }
 
       final response = await http.post(
         Uri.parse(assessmentBaseUrl),

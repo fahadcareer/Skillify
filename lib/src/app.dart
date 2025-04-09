@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:Skillify/src/cubit/profile/profile_cubit.dart';
 import 'package:Skillify/src/cubit/register/register_cubit.dart';
+import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
 import 'package:Skillify/src/provider/assesment_provider.dart';
 import 'package:Skillify/src/provider/drawer_provider.dart';
 import 'package:Skillify/src/provider/internet_provider.dart';
@@ -50,6 +51,8 @@ class MyApp extends StatelessWidget {
           create: (context) => ProfileProvider()),
       ChangeNotifierProvider<QuestionsProvider>(
           create: (context) => QuestionsProvider()),
+      ChangeNotifierProvider<InitiateassessmentProvider>(
+          create: (context) => InitiateassessmentProvider()),
       ChangeNotifierProvider<AppLanguage>(create: (context) => AppLanguage()),
     ], child: AssessmentApp());
   }
