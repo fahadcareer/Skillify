@@ -1,5 +1,6 @@
 import 'package:Skillify/src/pages/Initiate%20Assessment/Initiate_assessment.dart';
 import 'package:Skillify/src/pages/profile_page.dart';
+import 'package:Skillify/src/pages/profiledetailspage.dart';
 import 'package:Skillify/src/services/repositoty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Skillify/src/pages/homepage.dart';
@@ -90,5 +91,9 @@ final GoRouter router = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: '/profileDetails',
+      builder: (context, state) => const Profiledetailspage(),
+    )
   ],
 );

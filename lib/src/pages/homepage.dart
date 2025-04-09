@@ -1,12 +1,13 @@
 import 'package:Skillify/src/data/local/cache_helper.dart';
 import 'package:Skillify/src/provider/profile_provider.dart';
 import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
+import 'package:Skillify/src/res/dimentions/app_dimensions.dart';
 import 'package:Skillify/src/res/dimentions/space.dart';
 import 'package:Skillify/src/res/drawable/drawables.dart';
 import 'package:Skillify/src/res/style/app_typography.dart';
-import 'package:Skillify/src/widgets/cus_appbar.dart';
 import 'package:Skillify/src/widgets/cus_bottom_nav.dart';
 import 'package:Skillify/src/widgets/cus_button.dart';
+import 'package:Skillify/src/widgets/image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -146,10 +147,35 @@ class HomePage extends StatelessWidget {
     final bool isManager = userRole == 0;
     return Scaffold(
       bottomNavigationBar: CustomBottomNavigation(currentIndex: 0),
-      appBar: CustomAppBar(
-        c: context,
-        title: "Skill Assessment",
-        backButton: false,
+      appBar: AppBar(
+        title: Text(
+          "Skill Assessment",
+          style: (TextStyles.b2 ?? const TextStyle()).copyWith(
+            color: Theme.of(context).floatingActionButtonTheme.foregroundColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        centerTitle: true,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12.0),
+          child: GestureDetector(
+            onTap: () {
+              context.push('/profileDetails');
+            },
+            child: Hero(
+              tag: 'image',
+              child: ClipOval(
+                child: CustomImg(
+                  height: AppDimensions.space(2.5),
+                  width: AppDimensions.space(2.5),
+                  image:
+                      'https://thinksport.com.au/wp-content/uploads/2020/01/avatar-.jpg',
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
