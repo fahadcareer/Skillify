@@ -7,3 +7,7 @@ void main() async {
   await CacheHelper.init();
   runApp(const MyApp());
 }
+
+// flutter build ios --release
+// flutter build apk --release
+

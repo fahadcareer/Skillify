@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<!-- Microphone Permission -->
+<key>NSMicrophoneUsageDescription</key>
+<string>We need access to your microphone for voice commands and audio recording.</string>
+
+<!-- Location Permissions -->
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>We need your location to provide location-based services.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>We use your location to enhance app functionality even when the app is not active.</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
