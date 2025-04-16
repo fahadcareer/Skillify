@@ -466,22 +466,15 @@ class _ResultPageState extends State<ResultPage>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  // Overview Tab
                   SingleChildScrollView(
                     child: _buildScoreSection(),
                   ),
-
-                  // Categories Tab
                   SingleChildScrollView(
                     child: _buildCategoryScores(),
                   ),
-
-                  // Analysis Tab
                   SingleChildScrollView(
                     child: _buildStrengthsAndImprovements(),
                   ),
-
-                  // Learning Path Tab
                   _buildLearningPath(),
                 ],
               ),

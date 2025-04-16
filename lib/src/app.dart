@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:Skillify/src/cubit/profile/profile_cubit.dart';
-import 'package:Skillify/src/cubit/register/register_cubit.dart';
 import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
 import 'package:Skillify/src/provider/assesment_provider.dart';
 import 'package:Skillify/src/provider/drawer_provider.dart';
@@ -35,9 +34,6 @@ class MyApp extends StatelessWidget {
     final NetworkServices networkServices = NetworkServices();
     final Repository repository = Repository(networkServices: networkServices);
     return MultiBlocProvider(providers: [
-      BlocProvider<RegisterCubit>(
-        create: (context) => RegisterCubit(repository: repository),
-      ),
       BlocProvider<ProfileCubit>(
         create: (context) => ProfileCubit(repository: repository),
       ),

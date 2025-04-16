@@ -1,3 +1,4 @@
+import 'package:Skillify/src/data/local/model/generate%20assesment/assessment_model.dart';
 import 'package:Skillify/src/data/local/model/login/login_model.dart';
 import 'package:Skillify/src/res/strings/network_string.dart';
 import 'package:Skillify/src/services/network_services.dart';
@@ -32,5 +33,38 @@ class Repository {
       return {'msg': 'Network service not initialized'};
     }
     return await networkServices!.saveProfile(profileData);
+  }
+
+  Future<Assessment> generateAssessment(
+      Map<String, dynamic> userProfile) async {
+    if (networkServices == null) {
+      throw Exception('Network service not initialized');
+    }
+
+    final res = await networkServices!.post(
+      endPoints: NetworkString.generateAssessment,
+      map: userProfile,
+    );
+
+    return Assessment.fromJson(res);
+  }
+
+  Future<Map<String, dynamic>> evaluateResponses({
+    required Map<String, dynamic> assessment,
+    required List<Map<String, dynamic>> userResponses,
+  }) async {
+    if (networkServices == null) {
+      throw Exception('Network service not initialized');
+    }
+
+    final res = await networkServices!.post(
+      endPoints: NetworkString.evaluateResponses,
+      map: {
+        "assessment": assessment,
+        "user_responses": userResponses,
+      },
+    );
+
+    return res;
   }
 }

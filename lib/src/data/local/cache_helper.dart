@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
-  static SharedPreferences? sharedPreferences; // Nullable
+  static SharedPreferences? sharedPreferences;
 
   static Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -26,7 +26,7 @@ class CacheHelper {
 
   static Future<bool> saveData(
       {required String key, required dynamic value}) async {
-    if (sharedPreferences == null) return false; // Handle null case
+    if (sharedPreferences == null) return false;
     if (value is String) {
       return await sharedPreferences!.setString(key, value);
     } else if (value is bool) {

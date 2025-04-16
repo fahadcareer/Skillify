@@ -4,4 +4,6 @@ class NetworkString {
   static const String register = "$baseURL/register";
   static const String profile = "$baseURL/profile";
   static const String getProfile = "$baseURL/profile";
+  static const String generateAssessment = "$baseURL/generate-assessment";
+  static const String evaluateResponses = "$baseURL/evaluate-Responses";
 }

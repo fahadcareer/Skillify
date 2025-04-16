@@ -5,7 +5,6 @@ import 'package:Skillify/src/services/repositoty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Skillify/src/pages/homepage.dart';
 import 'package:Skillify/src/pages/login/login_page.dart';
-import 'package:Skillify/src/pages/register/register_page.dart';
 import 'package:Skillify/src/pages/assessment_page.dart';
 import 'package:Skillify/src/pages/result_page.dart';
 import 'package:Skillify/src/pages/404/404_page.dart';
@@ -52,10 +51,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-      path: '/register',
-      builder: (context, state) => const RegisterPage(),
     ),
     GoRoute(
       path: '/home',
