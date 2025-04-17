@@ -1,13 +1,12 @@
 import 'package:Skillify/src/data/local/cache_helper.dart';
 import 'package:Skillify/src/provider/Initiateassessment_provider.dart';
+import 'package:Skillify/src/res/strings/network_string.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ProfileProvider extends ChangeNotifier {
-  final String assessmentBaseUrl =
-      'http://20.46.197.154:5075/generate-assessment';
-
+  final String assessmentBaseUrl = NetworkString.generateAssessment;
   Map<String, dynamic> _userProfile = {};
   Map<String, dynamic> _assessment = {};
   bool _isLoading = false;

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Skillify/src/res/strings/network_string.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -43,10 +44,9 @@ class Assignment {
 }
 
 class InitiateassessmentProvider extends ChangeNotifier {
-  final String namesUrl = 'http://20.46.197.154:5075/profiles/names';
-  final String submitUrl = 'http://20.46.197.154:5075/assignments';
-  final String fetchAssignmentUrl =
-      'http://20.46.197.154:5075/assignments/email/';
+  final String namesUrl = NetworkString.names;
+  final String submitUrl = NetworkString.submitAssignment;
+  final String fetchAssignmentUrl = NetworkString.fetchAssignmentByEmail;
 
   bool _isLoading = false;
   List<Student> _students = [];

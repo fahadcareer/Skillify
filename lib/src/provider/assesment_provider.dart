@@ -1,3 +1,4 @@
+import 'package:Skillify/src/res/strings/network_string.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,7 +36,7 @@ class Question {
 }
 
 class QuestionsProvider extends ChangeNotifier {
-  final String baseUrl = 'http://20.46.197.154:5075';
+  final String evaluateUrl = NetworkString.evaluateResponses;
   List<Question> _questions = [];
   bool _isLoading = false;
   String _error = '';
@@ -76,7 +77,7 @@ class QuestionsProvider extends ChangeNotifier {
       final userResponses = {for (var q in _questions) q.id: q.userAnswer};
 
       final response = await http.post(
-        Uri.parse('$baseUrl/evaluate-responses'),
+        Uri.parse(evaluateUrl),
         headers: {
           'Content-Type': 'application/json',
         },
